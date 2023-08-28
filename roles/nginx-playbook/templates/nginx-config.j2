@@ -1,0 +1,19 @@
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    {% if ansible_os_family == 'Debian' %}
+    root {{ nginx_root_directory_ubuntu }};
+    {% elif ansible_os_family == 'RedHat' %}
+    root {{ nginx_root_directory_redhat }};
+    {% elif ansible_os_family == 'Amazon' %}
+    root {{ nginx_root_directory_amazon }};
+    {% else %}
+    root {{ nginx_root_directory_default }};
+    {% endif %}
+
+    server_name _;
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}

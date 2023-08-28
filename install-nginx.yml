@@ -1,0 +1,5 @@
+- name: Install and Configure Nginx
+  hosts: ubuntu, redhat, amazonlinux
+  become: true
+  roles:
+    - nginx-playbook

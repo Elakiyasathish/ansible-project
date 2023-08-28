@@ -1,0 +1,13 @@
+# Root directory
+nginx_root_directory_ubuntu: /var/www/html
+nginx_root_directory_redhat: /usr/share/nginx/html
+nginx_root_directory_amazon: /usr/share/nginx/html
+
+
+install_state: latest
+service_name: nginx
+
+#Config directory
+nginx_config_directory_ubuntu: /etc/nginx/sites-available
+nginx_config_directory_redhat: /etc/nginx/conf.d
+nginx_config_directory_amazon: /etc/nginx/conf.d

@@ -1,0 +1,44 @@
+- name: Update the package cache (Ubuntu)
+  apt:
+    update_cache: yes
+  when: ansible_os_family == 'Debian'
+  
+- name: Update the package cache (RedHat and Amazon Linux)
+  yum:
+    name: "*"
+    state: latest
+  when: ansible_os_family == 'RedHat' or ansible_os_family == 'Amazon'
+
+- name: Install the nginx server
+  package:
+    name: "{{ service_name }}"
+    state: "{{ install_state }}"
+
+#- name: Debug Ubuntu
+  #debug:
+    #msg: "Copying for Ubuntu: {{ ansible_os_family == 'Debian' }}"
+  #when: ansible_os_family == 'Debian'
+
+- name: Copy Nginx configuration for Ubuntu
+  copy:
+    src: templates/nginx-config.j2  # Source file path within your role
+    dest: "{{ nginx_config_directory_ubuntu }}/nginx-config.conf"  # Destination file path on the target machine
+  when: ansible_os_family == 'Debian'  # Only copy on Ubuntu
+
+- name: Copy Nginx configuration for RedHat and AmazonLinux
+  copy:
+    src: templates/nginx-config.j2  # Source file path within your role
+    dest: "{{ nginx_config_directory_redhat }}/nginx-config.conf"  # Destination file path on the target machine
+  when: ansible_os_family == 'RedHat' or ansible_os_family == 'Amazon'
+
+- name: Copy index.html for Ubuntu
+  copy:
+    src: files/index.html  # Source file path within your role
+    dest: "{{ nginx_root_directory_ubuntu }}/index.html"  # Destination file path on the target machine
+  when: ansible_os_family == 'Debian'  # Only copy on Ubuntu
+
+- name: Copy index.html for RedHat and AmazonLinux
+  copy:
+    src: files/index.html  # Source file path within your role
+    dest: "{{ nginx_root_directory_redhat }}/index.html"  # Destination file path on the target machine
+  when: ansible_os_family == 'RedHat' or ansible_os_family == 'Amazon'
